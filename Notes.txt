@@ -1,0 +1,5 @@
+Once a game is complete, the full dataset for the game can be accessed with this api:
+    https://statsapi.mlb.com/api/v1.1/game/631377/feed/live/
+
+    https://statsapi.mlb.com/api/v1.1/game/${gameid}/feed/live/
+    
