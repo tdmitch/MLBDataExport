@@ -1,0 +1,4 @@
+USE [MLB]
+GO
+CREATE SCHEMA fact;
+GO
