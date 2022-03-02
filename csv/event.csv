@@ -1,0 +1,48 @@
+event,onBase
+Batter Interference,0
+Batter Out,0
+Bunt Groundout,0
+Bunt Lineout,0
+Bunt Pop Out,0
+Catcher Interference,1
+Caught Stealing 2B,0
+Caught Stealing 3B,0
+Caught Stealing Home,0
+Double,1
+Double Play,0
+Fan Interference,0
+Field Error,0
+Fielders Choice,0
+Fielders Choice Out,0
+Flyout,0
+Forceout,0
+Game Advisory,0
+Grounded Into DP,0
+Groundout,0
+Hit By Pitch,1
+Home Run,1
+Intent Walk,1
+Lineout,0
+Passed Ball,0
+Pickoff 1B,0
+Pickoff 2B,0
+Pickoff 3B,0
+Pickoff Caught Stealing 2B,0
+Pickoff Caught Stealing 3B,0
+Pickoff Caught Stealing Home,0
+Pickoff Error 1B,0
+Pop Out,0
+Runner Double Play,0
+Runner Out,0
+Sac Bunt,0
+Sac Bunt Double Play,0
+Sac Fly,0
+Sac Fly Double Play,0
+Single,1
+Stolen Base 2B,0
+Strikeout,0
+Strikeout Double Play,0
+Triple,1
+Triple Play,0
+Walk,1
+Wild Pitch,0
