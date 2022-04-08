@@ -3,4 +3,4 @@ Py proj to build a killer mlb db
 
 ANALYZE
 
-Opening Day 2022 is this Friday 4/8/2022
+Opening Day 2022 was Thursday  4/7/2022
