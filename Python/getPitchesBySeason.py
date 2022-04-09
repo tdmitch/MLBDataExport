@@ -1,25 +1,25 @@
-'''
-Once a game is complete, the full dataset for the game can be accessed with this api:
-    https://statsapi.mlb.com/api/v1.1/game/631377/feed/live/
+# '''
+# Once a game is complete, the full dataset for the game can be accessed with this api:
+#     https://statsapi.mlb.com/api/v1.1/game/631377/feed/live/
 
-    https://statsapi.mlb.com/api/v1.1/game/${gameid}/feed/live/
+#     https://statsapi.mlb.com/api/v1.1/game/${gameid}/feed/live/
 
-    here is a URL for the imafe sources for team Hat logos https://www.mlbstatic.com/team-logos/team-cap-on-light/108.svg
+#     here is a URL for the image sources for team Hat logos https://www.mlbstatic.com/team-logos/team-cap-on-light/108.svg
 
-    for the current day's schedule: http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1
+#     for the current day's schedule: http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1
 
-    for the mlb schedule on a given date http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&date=04/10/2018
+#     for the mlb schedule on a given date http://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&date=04/10/2018
 
-    use this to get the begining and end dates for seasons GET http://lookup-service-prod.mlb.com/json/named.org_game_type_date_info.bam?current_sw='Y'&sport_code='mlb'&game_type='L'&season='2017'
-    'R' - Regular Season
-    'S' - Spring Training
-    'E' - Exhibition
-    'A' - All Star Game
-    'D' - Division Series
-    'F' - First Round (Wild Card)
-    'L' - League Championship
-    'W' - World Series
-'''
+#     use this to get the begining and end dates for seasons GET http://lookup-service-prod.mlb.com/json/named.org_game_type_date_info.bam?current_sw='Y'&sport_code='mlb'&game_type='L'&season='2017'
+#     'R' - Regular Season
+#     'S' - Spring Training
+#     'E' - Exhibition
+#     'A' - All Star Game
+#     'D' - Division Series
+#     'F' - First Round (Wild Card)
+#     'L' - League Championship
+#     'W' - World Series
+# '''
 # Dependencies
     # requests
     # pandas
@@ -28,14 +28,10 @@ Once a game is complete, the full dataset for the game can be accessed with this
 import requests
 
 # for date manipulation
-from datetime import datetime, timedelta
+from datetime import datetime #, timedelta
 
 # pyodbc is used for connecting to the database
 import pyodbc
-
-# pandas is used for a bunch a cool stuff i think, i don't really know. here i want to use it to read the sql query results
-# define the database connection parameters
-# import pandas
 
 # i think i need this one so that i can output the error messages in try catch
 import sys
@@ -46,7 +42,7 @@ def getPitches(season):
     # define the database connection parameters
     conn = pyodbc.connect(
         'Driver={SQL Server};'
-        'Server=1S343Z2;'
+        'Server=DESKTOP-3J5KVRA;'
         'Database=MLB;'
         'Trusted_Connection=yes;'
         )
@@ -67,6 +63,7 @@ def getPitches(season):
 
     # itereate over the rows returned
     for game in games:  
+        
         #build game feed request string - the wierd syntax on game is because game is a pyodbc.Row type, so the [0] index returns just the first column in the row (even tho there is only one column)
         gameFeedRequest = f'https://statsapi.mlb.com/api/v1.1/game/{game[0]}/feed/live/'
 

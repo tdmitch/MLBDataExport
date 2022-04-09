@@ -18,7 +18,7 @@ import sys
 # define the database connection parameters
 conn = pyodbc.connect(
     'Driver={SQL Server};'
-    'Server=1S343Z2;'
+    'Server=DESKTOP-3J5KVRA;'
     'Database=MLB;'
     'Trusted_Connection=yes;'
     )

@@ -9,7 +9,7 @@ import pyodbc
 
 # pandas is used for a bunch a cool stuff i think, i don't really know. here i want to use it to read the sql query results
 # define the database connection parameters
-import pandas
+# import pandas
 
 # i think i need this one so that i can output the error messages in try catch
 import sys
@@ -19,17 +19,28 @@ import sys
 # define the database connection parameters
 conn = pyodbc.connect(
     'Driver={SQL Server};'
-    'Server=1S343Z2;'
+    'Server=DESKTOP-3J5KVRA;'
     'Database=MLB;'
     'Trusted_Connection=yes;'
     )
 # initialize cursor
 cursor = conn.cursor()
 
+
+# TODO - For 2022 Data this needs to be re-factored to a different methodology. In 2022 we need to use the schedule api 
+
+# StartDate = '2022-04-07'
+# EndDate = '2022-04-07'
+# # TODO add a loop to run through days from start to end inclusive
+
+# DailyScheduleRequestString = f"https://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&date={StartDate}" 
+# DailyScheduleResponse = requests.get(DailyScheduleRequestString)
+# DailyScheduleResponse = DailyScheduleResponse.json()
+
 def getGames(season, gameType):
     #set initial parameters 
-    # season = 2010
-    # gameType = 'R'
+    season = 2021
+    gameType = 'R'
 
     # build the string to request the start and end dates for a season by game type
     gameTypeDateRequestString = f"http://lookup-service-prod.mlb.com/json/named.org_game_type_date_info.bam?current_sw='Y'&sport_code='mlb'&game_type=%27{gameType}%27&season=%27{season}%27"
@@ -42,8 +53,8 @@ def getGames(season, gameType):
 
     #Regular season only (to start with)
     #initialize first and last game date for regular season
-    first_game_date = (gameTypeDateResponse['org_game_type_date_info']['queryResults']['row'][0]['first_game_date'])
-    last_game_date = (gameTypeDateResponse['org_game_type_date_info']['queryResults']['row'][0]['last_game_date'])
+    first_game_date = (gameTypeDateResponse['org_game_type_date_info']['queryResults']['row']['first_game_date'])
+    last_game_date = (gameTypeDateResponse['org_game_type_date_info']['queryResults']['row']['last_game_date'])
 
     print(f"first_game_date {first_game_date}")
     print(f"last_game_date {last_game_date}")

@@ -2,14 +2,11 @@
 import requests
 
 # for date manipulation
-from datetime import datetime, timedelta
+import datetime 
 
 # pyodbc is used for connecting to the database
 import pyodbc
 
-# pandas is used for a bunch a cool stuff i think, i don't really know. here i want to use it to read the sql query results
-# define the database connection parameters
-import pandas
 
 # i think i need this one so that i can output the error messages in try catch
 import sys
@@ -19,7 +16,7 @@ import sys
 # define the database connection parameters
 conn = pyodbc.connect(
     'Driver={SQL Server};'
-    'Server=1S343Z2;'
+    'Server=DESKTOP-3J5KVRA;'
     'Database=MLB;'
     'Trusted_Connection=yes;'
     )
