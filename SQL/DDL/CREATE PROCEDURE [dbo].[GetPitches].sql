@@ -49,6 +49,7 @@ SELECT
 		-- *B - Called Ball in Strike Zone?
 		-- C - Called Strike
 		-- ? - Swinging Strike
+		-- D - Double
 		-- X Out
 FROM
 	MLB.dbo.Pitch P

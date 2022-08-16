@@ -5,7 +5,7 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE PROCEDURE dbo.PitcherCharacheristics(
+ALTER PROCEDURE dbo.PitcherCharacheristics(
 	@pitcherId NVARCHAR(MAX)
 )
 AS
@@ -16,6 +16,7 @@ AS
 SELECT
 	  P.pitcherId
 	, CONCAT(PL.lastName, ', ' , PL.firstName) AS Pitcher
+	, T.fullName AS TeamName
 	, P.typeCode 
 	-- FC - Cutter
 	-- FF - Fastball
@@ -46,16 +47,19 @@ SELECT
 FROM
 	MLB.dbo.Pitch P 
 	LEFT JOIN MLB.dbo.Player PL ON PL.playerId = P.pitcherId
+	LEFT JOIN MLB.dbo.Team   T ON T.teamId = PL.teamId
 	
 WHERE
 	(P.pitcherId = @pitcherId OR @pitcherId IS NULL)
-	--PL.lastName = 'Musgrove'
-	--PL.lastName = 'Cobb'
-	--PL.lastName = 'Winckowski'
+
 GROUP BY
 	  P.pitcherId
 	, CONCAT(PL.lastName, ', ' , PL.firstName) --AS Pitcher
+	, T.fullName 
+
 	, P.typeCode
 ORDER BY
 	  P.pitcherId
 	, P.typeCode
+
+	

@@ -5,14 +5,16 @@ GO
 /*
 	Get Players
 
-	1 Param 
-
-	pitchers only bit value returns only pitchers
-	else all players are returned
+	2 Params 
+	   - @pitcherOnly 
+		pitchers only bit value returns only pitchers
+		else all players are returned
+	   - teamId
 */
 
-CREATE PROCEDURE dbo.getPlayers(
-	@playerType CHAR = NULL
+ALTER PROCEDURE dbo.getPlayers(
+	  @pitcherOnly NVARCHAR(2) = NULL
+	, @teamId INT = NULL
 )
 AS
 
@@ -20,8 +22,7 @@ AS
 
 SELECT
 	  P.playerId
-	, P.firstName
-	, P.lastName
+	, CONCAT(P.lastName, ', ' , P.firstName) AS fullName
 	, P.jerseyNumber
 	, P.weight
 	, P.heightFeet
@@ -33,5 +34,6 @@ SELECT
 FROM
 	dbo.Player P 
 WHERE
-	P.primaryPosition = @pitcherOnly OR @pitcherOnly IS NULL
+	(P.primaryPosition = @pitcherOnly OR @pitcherOnly IS NULL)
+	AND (P.teamId = @teamId OR @teamId IS NULL)
 	
