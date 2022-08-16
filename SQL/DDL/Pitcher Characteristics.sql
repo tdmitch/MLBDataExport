@@ -5,16 +5,19 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
---ALTER PROCEDURE dbo.PitcherCharacheristics(
---	@pitcherId NVARCHAR(MAX)
---)
---AS
-
-DECLARE
-	  @pitcherId NVARCHAR(MAX) = 657277 -- NULL -- if null select all
-	, @batterId NVARCHAR(MAX) = 657108	-- for matchups
+ALTER PROCEDURE dbo.PitcherCharacheristics(
+	  @pitcherId NVARCHAR(MAX) = NULL -- if null select all
+	, @batterId NVARCHAR(MAX) = NULL	-- for matchups
 	, @batterHand VARCHAR(MAX) = NULL	-- for L/R splits
 	, @pitcherHand VARCHAR(MAX) = NULL	-- for L/R splits
+)
+AS
+
+--DECLARE
+--	  @pitcherId NVARCHAR(MAX) = 657277 -- NULL -- if null select all
+--	, @batterId NVARCHAR(MAX) = 657108	-- for matchups
+--	, @batterHand VARCHAR(MAX) = NULL	-- for L/R splits
+--	, @pitcherHand VARCHAR(MAX) = NULL	-- for L/R splits
 ----------------------------------------------------------------------------------------
 -- get at bat count
 SELECT

@@ -14,6 +14,7 @@ GO
 
 ALTER PROCEDURE dbo.getPlayers(
 	  @pitcherOnly NVARCHAR(2) = NULL
+	, @pitcherId NVARCHAR(MAX) = NULL
 	, @teamId INT = NULL
 )
 AS
@@ -36,4 +37,5 @@ FROM
 WHERE
 	(P.primaryPosition = @pitcherOnly OR @pitcherOnly IS NULL)
 	AND (P.teamId = @teamId OR @teamId IS NULL)
+
 	
