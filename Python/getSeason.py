@@ -2,7 +2,7 @@ import getGameIdsBySeason, getPitchesBySeason, getPlayersBySeason, getTeamsBySea
 
 Season = 2021
 
-getGameIdsBySeason.getGames(Season,'S')
+#getGameIdsBySeason.getGames(Season,'S')
 
     # 'R' - Regular Season
     # 'S' - Spring Training
@@ -13,7 +13,7 @@ getGameIdsBySeason.getGames(Season,'S')
     # 'L' - League Championship
     # 'W' - World Series
 
-getPitchesBySeason.getPitches(Season)
+#getPitchesBySeason.getPitches(Season)
 
 getPlayersBySeason.getPlayers(Season)
 

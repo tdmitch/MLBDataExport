@@ -12,7 +12,7 @@ GO
 	   - teamId
 */
 
-ALTER PROCEDURE dbo.getPlayers(
+CREATE PROCEDURE dbo.getPlayers(
 	  @pitcherOnly NVARCHAR(2) = NULL
 	, @pitcherId NVARCHAR(MAX) = NULL
 	, @teamId INT = NULL

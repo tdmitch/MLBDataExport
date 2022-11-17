@@ -5,21 +5,22 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-ALTER PROCEDURE dbo.PitcherCharacheristics(
-	  @pitcherId NVARCHAR(MAX) = NULL -- if null select all
-	, @batterId NVARCHAR(MAX) = NULL	-- for matchups
+-- CREATE PROCEDURE dbo.getPitcherCharacheristics(
+-- 	  @pitcherId NVARCHAR(MAX) = NULL -- if null select all
+-- 	, @batterId NVARCHAR(MAX) = NULL	-- for matchups
+-- 	, @batterHand VARCHAR(MAX) = NULL	-- for L/R splits
+-- 	, @pitcherHand VARCHAR(MAX) = NULL	-- for L/R splits
+-- )
+-- AS
+
+DECLARE
+	  @pitcherId NVARCHAR(MAX) = 657277 -- NULL -- if null select all
+	, @batterId NVARCHAR(MAX) = 657108	-- for matchups
 	, @batterHand VARCHAR(MAX) = NULL	-- for L/R splits
 	, @pitcherHand VARCHAR(MAX) = NULL	-- for L/R splits
-)
-AS
-
---DECLARE
---	  @pitcherId NVARCHAR(MAX) = 657277 -- NULL -- if null select all
---	, @batterId NVARCHAR(MAX) = 657108	-- for matchups
---	, @batterHand VARCHAR(MAX) = NULL	-- for L/R splits
---	, @pitcherHand VARCHAR(MAX) = NULL	-- for L/R splits
 ----------------------------------------------------------------------------------------
 -- get at bat count
+DROP TABLE IF EXISTS #AtBatCount 
 SELECT
 	  AtBats.pitcherId
 	, COUNT(*) AS AtBatCount
@@ -47,8 +48,14 @@ GROUP BY
 -- main
 SELECT
 	  P.pitcherId
-	, CONCAT(PL.lastName, ', ' , PL.firstName) AS Pitcher
-	, T.fullName AS TeamName
+	, CONCAT(PITCH.lastName, ', ' , PITCH.firstName) AS Pitcher
+	, PT.fullName AS pTeamName
+	----
+	, P.batterId
+	, CONCAT(BAT.lastName, ', ', BAT.FirstName) AS Batter
+	, BT.fullName AS bTeamName
+
+
 	, P.typeCode 
 	-- FC - Cutter
 	-- FF - Fastball
@@ -79,10 +86,13 @@ SELECT
 	-- , P.zone -- this would make a good pivot
 FROM
 	MLB.dbo.Pitch P 
-	LEFT JOIN MLB.dbo.Player PL		ON PL.playerId = P.pitcherId
-	LEFT JOIN MLB.dbo.Team   T		ON T.teamId = PL.teamId
+	
 	LEFT JOIN MLB.dbo.Player BAT	ON BAT.playerId = P.batterId
 	LEFT JOIN MLB.dbo.Player PITCH  ON PITCH.playerId = P.pitcherId
+
+	LEFT JOIN MLB.dbo.Team   PT		ON PT.teamId = PITCH.teamId
+	LEFT JOIN MLB.dbo.Team   BT		ON BT.teamId = BAT.teamId
+
 	LEFT JOIN #AtBatCount	 AB		ON AB.pitcherId = P.pitcherId
 	
 WHERE
@@ -93,14 +103,18 @@ WHERE
 
 GROUP BY
 	  P.pitcherId
-	, CONCAT(PL.lastName, ', ' , PL.firstName) --AS Pitcher
-	, T.fullName 
-	, P.typeCode
+	, CONCAT(PITCH.lastName, ', ' , PITCH.firstName) --AS Pitcher
+	, PT.fullName --AS pTeamName
+	----
+	, P.batterId
+	, CONCAT(BAT.lastName, ', ', BAT.FirstName) --AS Batter
+	, BT.fullName --AS bTeamName
+
+
+	, P.typeCode 
 ORDER BY
 	  P.pitcherId
 	, P.typeCode
 
-DROP TABLE IF EXISTS
-	#AtBatCount	
 
 	

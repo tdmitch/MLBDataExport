@@ -77,6 +77,7 @@ def getPlayers(season):
             conn.commit()
 
         except KeyError:
+            print('Error')
             #if there is a key error - if the key isn't present, dont push to db
-            print('Error', sys.exc_info()[0])
-
+            #print('Error', sys.exc_info()[0])
+            

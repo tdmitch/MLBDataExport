@@ -11,7 +11,7 @@ GO
 
 	Get the games played for a team, or the whole season
 */
-ALTER PROCEDURE dbo.GetGames
+CREATE PROCEDURE dbo.GetGames
 	  @season		INT  
 	, @teamId		INT  
 	, @startDate	DATE 

@@ -12,7 +12,7 @@ GO
 	Get the unique list of teams from the Team table
 	Use for parameters in reports etc.
 */
-ALTER PROCEDURE dbo.GetTeams
+CREATE PROCEDURE dbo.GetTeams
 AS
 SELECT
 	T.teamId
