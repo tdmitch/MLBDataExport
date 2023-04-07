@@ -13,7 +13,7 @@ Season = 2021
     # 'L' - League Championship
     # 'W' - World Series
 
-#getPitchesBySeason.getPitches(Season)
+getPitchesBySeason.getPitches(Season)
 
 getPlayersBySeason.getPlayers(Season)
 

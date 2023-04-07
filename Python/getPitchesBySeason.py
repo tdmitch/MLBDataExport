@@ -40,12 +40,23 @@ def getPitches(season):
 # INITIALIZE SQL STUFF
 
     # define the database connection parameters
-    conn = pyodbc.connect(
-        'Driver={SQL Server};'
-        'Server=DESKTOP-3J5KVRA;'
-        'Database=MLB;'
-        'Trusted_Connection=yes;'
-        )
+    # conn = pyodbc.connect(
+    #     'Driver={SQL Server};'
+    #     'Server=DESKTOP-3J5KVRA;'
+    #     'Database=MLB;'
+    #     'Trusted_Connection=yes;'
+    #     )
+
+    #redshift
+    import redshift_connector
+    conn = redshift_connector.connect(
+        host=
+        database='mlb',
+        user='pdavis',
+        password='Fredrox7!'
+    )
+
+
     # initialize cursor
     cursor = conn.cursor()
 

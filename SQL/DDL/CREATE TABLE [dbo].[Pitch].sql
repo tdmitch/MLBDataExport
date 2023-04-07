@@ -22,20 +22,40 @@ CREATE TABLE [MLB].[dbo].[Pitch](
 	[strikeZoneTop] decimal(7,2),
 	[strikeZoneBottom] decimal(7,2),
 	--pitchData coordinates
+	-- ax, ay, az: the acceleration of the pitch, in feet per second per second, in three dimensions, measured at the initial point.
+	-- https://fastballs.wordpress.com/category/pitchfx-glossary/
+	
 	[aY] decimal(7,2),
 	[aZ] decimal(7,2),
+	-- pfx_x: the horizontal movement, in inches, of the pitch between the release point and home plate, 
+	-- as compared to a theoretical pitch thrown at the same speed with no spin-induced movement. 
+	-- This parameter is measured at y=40 feet regardless of the y0 value.
 	[pfxX] decimal(7,2),
+	--pfx_z: the vertical movement, in inches, of the pitch between the release point and home plate, 
+	-- as compared to a theoretical pitch thrown at the same speed with no spin-induced movement. 
+	-- This parameter is measured at y=40 feet regardless of the y0 value.
 	[pfxZ] decimal(7,2),
+	-- px: the left/right distance, in feet, of the pitch from the middle of the plate as it crossed home plate. 
+	-- The PITCHf/x coordinate system is oriented to the catcher’s/umpire’s perspective, with distances to the right being positive and to the left being negative.
 	[pX] decimal(7,2),
+	-- the height of the pitch in feet as it crossed the front of home plate.
 	[pZ] decimal(7,2),
+
 	[vX0] decimal(7,2),
 	[vY0] decimal(7,2),
 	[vZ0] decimal(7,2),
+
 	[x] decimal(7,2),
 	[y] decimal(7,2),
+	-- the left/right distance, in feet, of the pitch, measured at the initial point.
+	-- to me this is pitcher's release point in x (horizontal) axis
 	[x0] decimal(7,2),
+	-- y0: the distance in feet from home plate where the PITCHf/x system is set to measure the initial parameters. This parameter has been variously set at 40, 50, or 55 feet (and in a few instances 45 feet) from the plate at different times throughout the 2007 season as Sportvision experiments with optimal settings for the PITCHf/x measurements. Sportvision settled on 50 feet in the second half of 2007, and this value of y0=50 feet has been used since. Changes in this parameter impact the values of all other parameters measured at the release point, such as start_speed.
 	[y0] decimal(7,2),
+	-- z0: the height, in feet, of the pitch, measured at the initial point.
+	-- this is the vertical release point
 	[z0] decimal(7,2),
+	
 	[aX] decimal(7,2),
 	--breaks
 	[breakAngle] decimal(7,2),
