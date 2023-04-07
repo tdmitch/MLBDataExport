@@ -16,10 +16,10 @@ GO
 
 -- =============================================
 -- Author:		<Author,,Paul Davis>
--- Create date: <Create Date,,08/06/2020>
--- Description:	<Description,>
+-- Create date: <Create Date,,04/06/2023>
+-- Description:	<Description, Delete duplicate teams from the teams table>
 -- =============================================
-CREATE PROCEDURE DeleteDuplicates 
+CREATE PROCEDURE DeleteDuplicateGames 
 
 AS
 BEGIN

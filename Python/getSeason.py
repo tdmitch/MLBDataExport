@@ -1,8 +1,8 @@
-import getGameIdsBySeason, getPitchesBySeason, getPlayersBySeason, getTeamsBySeason
+import getGameIdsBySeason #, getPitchesBySeason, getPlayersBySeason, getTeamsBySeason
 
-Season = 2021
+Season = 2023
 
-#getGameIdsBySeason.getGames(Season,'S')
+getGameIdsBySeason.getGames(Season,'S')
 
     # 'R' - Regular Season
     # 'S' - Spring Training
@@ -13,11 +13,11 @@ Season = 2021
     # 'L' - League Championship
     # 'W' - World Series
 
-getPitchesBySeason.getPitches(Season)
+# getPitchesBySeason.getPitches(Season)
 
-getPlayersBySeason.getPlayers(Season)
+# getPlayersBySeason.getPlayers(Season)
 
-getTeamsBySeason.getTeams(Season)
+# getTeamsBySeason.getTeams(Season)
 
 # execute Load_fact.Season SP
 # execute Load_fact.
