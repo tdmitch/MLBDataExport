@@ -16,56 +16,44 @@ import sys
 
 # INITIALIZE SQL STUFF
 
-# define the database connection parameters
-conn = pyodbc.connect(
-    'Driver={SQL Server};'
-    'Server=DESKTOP-3J5KVRA;'
-    'Database=MLB;'
-    'Trusted_Connection=yes;'
-    )
-# initialize cursor
-cursor = conn.cursor()
+def wholeSeason(season):
+        
+    # define the database connection parameters
+    conn = pyodbc.connect(
+        'Driver={SQL Server};'
+        'Server=DESKTOP-3J5KVRA;'
+        'Database=MLB;'
+        'Trusted_Connection=yes;'
+        )
+    # initialize cursor
+    cursor = conn.cursor()
 
 
-# TODO - For 2022 Data this needs to be re-factored to a different methodology. In 2022 we need to use the schedule api
+    # TODO - For 2022 Data this needs to be re-factored to a different methodology. In 2022 we need to use the schedule api
+    # I lost the schedule api previously used
+    # need to do something different, this is a hack at best
+    # loop through the dates from 3/1 to 11/31 (hypthetically) for the given season
+    StartDate = '2023-03-1'
+    StartDate = f"{season}-03-01"
+    # EndDate = '2023-11/31'
+    EndDate = f"{season}-11-15"
+    
+    # example api calls
+    # DailyScheduleRequestString = f"https://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&date={StartDate}"
+    # DailyScheduleResponse = requests.get(DailyScheduleRequestString)
+    # DailyScheduleResponse = DailyScheduleResponse.json()
 
-StartDate = '2022-04-07'
-EndDate = '2022-04-07'
-# # TODO add a loop to run through days from start to end inclusive
-
-DailyScheduleRequestString = f"https://statsapi.mlb.com/api/v1/schedule/games/?sportId=1&date={StartDate}"
-DailyScheduleResponse = requests.get(DailyScheduleRequestString)
-DailyScheduleResponse = DailyScheduleResponse.json()
-
-def getGames(season, gameType):
-    #set initial parameters
-    # season = season
+    # def getGames(season, gameType):
+        #set initial parameters
+        # season = season
     gameType = 'R'
 
-    # build the string to request the start and end dates for a season by game type
-    gameTypeDateRequestString = f"http://lookup-service-prod.mlb.com/json/named.org_game_type_date_info.bam?current_sw='Y'&sport_code='mlb'&game_type=%27{gameType}%27&season=%27{season}%27"
-
-    # get the game type dates
-    gameTypeDateResponse = requests.get(gameTypeDateRequestString)
-
-    # format as json
-    gameTypeDateResponse = gameTypeDateResponse.json()
-
-    #Regular season only (to start with)
-    #initialize first and last game date for regular season
-    first_game_date = (gameTypeDateResponse['org_game_type_date_info']['queryResults']['row']['first_game_date'])
-    last_game_date = (gameTypeDateResponse['org_game_type_date_info']['queryResults']['row']['last_game_date'])
-
-    print(f"first_game_date {first_game_date}")
-    print(f"last_game_date {last_game_date}")
-
-    # convert the string returned by the api to a date time value
-    first_game_date = datetime.strptime(first_game_date,'%Y-%m-%dT%H:%M:%S')
-    last_game_date = datetime.strptime(last_game_date,'%Y-%m-%dT%H:%M:%S')
-
-    # calculate the difference between start and end date
+    # convert the start date and end date to date time value
+    first_game_date = datetime.strptime(StartDate,'%Y-%m-%d')
+    last_game_date = datetime.strptime(EndDate,'%Y-%m-%d')
+    # # calculate the difference between start and end date
     delta = last_game_date - first_game_date
-
+    
     print(delta)
 
     try:

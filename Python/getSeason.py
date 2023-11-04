@@ -1,10 +1,11 @@
-import getGameIdsBySeason #, getPitchesBySeason, getPlayersBySeason, getTeamsBySeason
+import getGameIdsBySeason, getPitchesBySeason,getPlayersBySeason, getTeamsBySeason
 
 Season = 2023
 
-getGameIdsBySeason.getGames(Season,'S')
+# getGameIdsBySeason.getGames(Season,'S')
+getGameIdsBySeason.wholeSeason(Season)
 
-    # 'R' - Regular Season
+    # 'R' - Regular Seasonwho
     # 'S' - Spring Training
     # 'E' - Exhibition
     # 'A' - All Star Game
@@ -13,11 +14,12 @@ getGameIdsBySeason.getGames(Season,'S')
     # 'L' - League Championship
     # 'W' - World Series
 
-# getPitchesBySeason.getPitches(Season)
 
-# getPlayersBySeason.getPlayers(Season)
+getPitchesBySeason.getPitches(Season)
 
-# getTeamsBySeason.getTeams(Season)
+getPlayersBySeason.getPlayers(Season)
+
+getTeamsBySeason.getTeams(Season)
 
 # execute Load_fact.Season SP
 # execute Load_fact.
