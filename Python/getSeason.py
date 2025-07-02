@@ -1,9 +1,9 @@
-import getGameIdsBySeason, getPitchesBySeason,getPlayersBySeason, getTeamsBySeason
+import Python.getGamesBySeason as getGamesBySeason, Python.extractPlateAppearancesAndPitches as extractPlateAppearancesAndPitches,getPlayersBySeason, getTeamsBySeason
 
 Season = 2023
 
 # getGameIdsBySeason.getGames(Season,'S')
-getGameIdsBySeason.wholeSeason(Season)
+getGamesBySeason.wholeSeason(Season)
 
     # 'R' - Regular Seasonwho
     # 'S' - Spring Training
@@ -15,7 +15,7 @@ getGameIdsBySeason.wholeSeason(Season)
     # 'W' - World Series
 
 
-getPitchesBySeason.getPitches(Season)
+extractPlateAppearancesAndPitches.getPitches(Season)
 
 getPlayersBySeason.getPlayers(Season)
 

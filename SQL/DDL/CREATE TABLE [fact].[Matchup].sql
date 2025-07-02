@@ -1,6 +1,7 @@
-USE [MLB]
+USE MLBData
+GO
 
-CREATE TABLE [MLB].[fact].[Matchup](
+CREATE TABLE [fact].[Matchup](
 
 	[gameId] INT,
 	faceOffNumber INT ,
@@ -8,5 +9,5 @@ CREATE TABLE [MLB].[fact].[Matchup](
 	[batterId] INT,
 	[atBatIndex] INT
 	
-) ON [PRIMARY] -- this has something to do with where the data is stored - file group
+) 
 

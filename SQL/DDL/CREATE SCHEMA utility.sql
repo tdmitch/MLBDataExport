@@ -1,1 +1,4 @@
+USE MLBData
+GO
+
 CREATE SCHEMA utility

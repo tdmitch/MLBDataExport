@@ -1,6 +1,7 @@
-USE [MLB]
--- DROP TABLE [MLB].[dbo].Pitch
-CREATE TABLE [MLB].[dbo].[Pitch](
+USE [MLBData]
+
+
+CREATE TABLE [dbo].[Pitch](
 	[playId] varchar(100) NOT NULL,
 	[gameId] int NOT NULL,			--6 digits long
 	[pitcherId] int,				--6 digits long

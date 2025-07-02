@@ -1,4 +1,4 @@
-USE [MLB];
+USE MLBData
 GO
 
 CREATE TABLE [fact].[Game](

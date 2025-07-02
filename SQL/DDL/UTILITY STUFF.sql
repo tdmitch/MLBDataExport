@@ -1,11 +1,8 @@
---dbo
---TRUNCATE TABLE Game
---TRUNCATE TABLE Pitch
+USE MLBData
+GO
 
---fact
---TRUNCATE TABLE [fact].[Game]
---TRUNCATE TABLE [fact].[Season]
---TRUNCATE TABLE [fact].[Matchup]
+
+
 SELECT
 	*
 FROM

@@ -1,4 +1,5 @@
-USE [MLB]
+USE MLBData
 GO
+
 CREATE SCHEMA fact;
 GO

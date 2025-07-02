@@ -1,6 +1,6 @@
-USE [MLB]
+USE [MLBData]
 
-CREATE TABLE [MLB].[dbo].[Game](
+CREATE TABLE [dbo].[Game](
 
 	gameId INT NOT NULL, --This is a way of creating a primary key in tables
 	season INT,

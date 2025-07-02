@@ -1,5 +1,5 @@
-USE [MLB];
-Go
+USE MLBData
+GO
 
 CREATE TABLE [dbo].[Team](
 	teamId INT,
