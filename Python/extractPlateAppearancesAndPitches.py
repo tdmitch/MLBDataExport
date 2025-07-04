@@ -37,12 +37,7 @@ import json
 
 def extractPlateAppearancesAndPitches():
 
-    # Get connection to the database
-    conn = db.connect_to_db()
-
-    # initialize cursor
-    cursor = conn.cursor()
-
+    
     # Load environment variables from .env file
     source_dir = os.getenv('DOWNLOAD_DIR') + "\\gameDetails"
 
@@ -53,6 +48,9 @@ def extractPlateAppearancesAndPitches():
 
     for filename in json_files:
         filepath = os.path.join(source_dir, filename)
+
+        plateAppearances = []
+        pitches = []
 
         gameFeed = None
 
@@ -66,43 +64,32 @@ def extractPlateAppearancesAndPitches():
 
         # loop through all the plays in the game
         for play in gameFeed['liveData']['plays']['allPlays']:
-            pitcherId               = play['matchup']['pitcher']['id'] 
-            pitchHand               = play['matchup']['pitchHand']['code']
-            batterId                = play['matchup']['batter']['id']
-            batSide                 = play['matchup']['batSide']['code']
-            atBatIndex              = play['atBatIndex']
+            playValues = {}
+            playValues['gameId']                    = gameId
+            playValues['pitcherId']               = play['matchup']['pitcher']['id'] 
+            playValues['pitchHand']               = play['matchup']['pitchHand']['code']
+            playValues['batterId']                = play['matchup']['batter']['id']
+            playValues['batSide']                 = play['matchup']['batSide']['code']
+            playValues['atBatIndex']              = play['atBatIndex']
 
             #about
-            halfInning              = play['about'].get('halfInning', 'NULL')
-            inning                  = play['about'].get('inning', 'NULL')
-            playStartTime           = play['about'].get('startTime', 'NULL')
-            playEndTime             = play['about'].get('endTime', 'NULL')
-            isScoringPlay           = play['about'].get('isScoringPlay', 'NULL')
-
-            #playStartTime = datetime.strptime(playStartTime,'%Y-%m-%dT%H:%M:%S.%fZ')
-            #playEndTime = datetime.strptime(playEndTime,'%Y-%m-%dT%H:%M:%S.%fZ')
-
-            #playStartTime = datetime.strftime(playStartTime, '%Y%m%d %H:%M:%S') 
-            #playEndTime =  datetime.strftime(playEndTime, '%Y%m%d %H:%M:%S')
+            playValues['halfInning']              = play['about'].get('halfInning', 'NULL')
+            playValues['inning']                  = play['about'].get('inning', 'NULL')
+            playValues['startTime']              = play['about'].get('startTime', 'NULL')
+            playValues['endTime']             = play['about'].get('endTime', 'NULL')
+            playValues['isScoringPlay']           = play['about'].get('isScoringPlay', 'NULL')
 
             #result
-            resultType             = play['result'].get('type', 'NULL')
-            event                  = play['result'].get('event', 'NULL')
-            eventType              = play['result'].get('eventType', 'NULL')
-            rbi                    = play['result'].get('rbi', 'NULL')
-            awayScore              = play['result'].get('awayScore', 'NULL')
-            homeScore              = play['result'].get('homeScore', 'NULL')
+            playValues['resultType']             = play['result'].get('type', 'NULL')
+            playValues['event']                  = play['result'].get('event', 'NULL')
+            playValues['eventType']              = play['result'].get('eventType', 'NULL')
+            playValues['rbi']                    = play['result'].get('rbi', 'NULL')
+            playValues['awayScore']              = play['result'].get('awayScore', 'NULL')
+            playValues['homeScore']              = play['result'].get('homeScore', 'NULL')
 
-            # build insert statement for [raw].[plateAppearances]
-            SqlInsertStatementPlateAppearance = ("INSERT INTO [raw].[PlateAppearance]"
-                    "(GameId, halfInning, inning, atBatIndex, pitcherId, pitchHand, batterId, batSide, startTime, endTime, isScoringPlay, resultType, event, eventType, rbi, awayScore, homeScore)"
-                    f'VALUES ({gameId}, \'{halfInning}\',{inning},{atBatIndex},{pitcherId},\'{pitchHand}\',{batterId},\'{batSide}\',\'{playStartTime}\',\'{playEndTime}\',\'{isScoringPlay}\',\'{resultType}\',\'{event}\',\'{eventType}\',{rbi},{awayScore},{homeScore})')
-                                    #insert a record
-            
-            SqlInsertStatementPlateAppearance = SqlInsertStatementPlateAppearance.replace('None', 'NULL').replace('\'NULL\'', 'NULL')
-            
-            cursor.execute(SqlInsertStatementPlateAppearance)
-            conn.commit()
+            # Add this plate appearance to the list
+            plateAppearances.append(playValues)
+
 
             # #loop through all the play events in each play node
             for playEvent in play['playEvents']:
@@ -112,10 +99,10 @@ def extractPlateAppearancesAndPitches():
                     # Store pitch values in a dictionary
                     pitchValues = {}     
                     pitchValues['gameId']             = gameId
-                    pitchValues['atBatIndex']         = atBatIndex
-                    pitchValues['pitcherId']          = pitcherId   
-                    pitchValues['batterId']          = batterId
-                    
+                    pitchValues['atBatIndex']         = playValues['atBatIndex']
+                    pitchValues['pitcherId']          = playValues['pitcherId']
+                    pitchValues['batterId']           = playValues['batterId']
+
                     pitchValues['playId']              = playEvent['playId']
                     pitchValues['pitchNumber']         = playEvent['pitchNumber']
                     # details
@@ -187,18 +174,12 @@ def extractPlateAppearancesAndPitches():
 
                     ############################################################################################################################################
 
-                    #build sql statement
-                    sqlKeys = ", ".join([f"[{key}]" for key in pitchValues.keys()])
-                    sqlValues = ", ".join([f"\'{pitchValues[key]}\'" for key in pitchValues.keys()])
+                    pitches.append(pitchValues)
 
-                    SqlInsertStatement = f"INSERT INTO [raw].[Pitch] ({sqlKeys})\nVALUES ({sqlValues})"
-                    
-                    SqlInsertStatement = SqlInsertStatement.replace('None', 'NULL').replace('\'NULL\'', 'NULL') 
-                    
-                    #insert a record
-                    cursor.execute(SqlInsertStatement)
 
-                    # #without this it doesnt commit - giving you a chance to check the execution and confirm it worked,. Your can query before commit
-                    conn.commit()
-                
+        # Insert plate appearances
+        db.insert_rows('raw.PlateAppearance', plateAppearances)       
+
+        # Insert pitches
+        db.insert_rows('raw.Pitch', pitches)
                 

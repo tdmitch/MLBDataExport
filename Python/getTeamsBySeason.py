@@ -1,70 +1,77 @@
-# for api calls
 import requests
+import db
 
-# for date manipulation
-import datetime 
-
-# pyodbc is used for connecting to the database
-import pyodbc
-
-
-# i think i need this one so that i can output the error messages in try catch
-import sys
-
-# INITIALIZE SQL STUFF
-
-# define the database connection parameters
-conn = pyodbc.connect(
-    'Driver={SQL Server};'
-    'Server=DESKTOP-3J5KVRA;'
-    'Database=MLB;'
-    'Trusted_Connection=yes;'
-    )
-# initialize cursor
-cursor = conn.cursor()
 
 def getTeams(Season):
 
     # build the string to request the team data by season
-    getTeams = f"http://lookup-service-prod.mlb.com/json/named.team_all_season.bam?sport_code='mlb'&all_star_sw='N'&season='{Season}'"
+    getTeams = f"https://statsapi.mlb.com/api/v1/teams?sportId=1&season={Season}"
 
     # get the teams details
     getTeamDetails = requests.get(getTeams)
 
     # format as json
-    getTeamDetails = getTeamDetails.json()
+    teams = getTeamDetails.json()["teams"]
 
-    teams = getTeamDetails['team_all_season']['queryResults']['row']
+    teamsList = []
 
     for team in teams:
-        try: 
-            teamId = team['team_id']
-            name = team['name']
-            fullName = team['name_display_full']
-            abbrevName = team['mlb_org_abbrev']
-            leagueId = team['league_id']
-            league= team['league_abbrev']
-            divisionId = team['division_id']
-            division = team['division']
-            venueName = team['venue_name']
-            venueId = team['venue_id']
-            city = team['city']
-            state = team['state']
-                        
-            # #build sql statement
-            SqlInsertStatement = ("INSERT INTO [MLB].[dbo].[Team]"
-            "(teamId, name, fullName, abbrevName, leagueId, league, divisionId, division, venueName, venueId, city, state)"
-            f"VALUES ({teamId}, \'{name}\', \'{fullName}\', \'{abbrevName}\', {leagueId}, \'{league}\', {divisionId}, \'{division}\', \'{venueName}\', {venueId}, \'{city}\',\'{state}\')")
+        teamDetails = {}
 
-            print(SqlInsertStatement)
-            
-            # #insert a record
-            cursor.execute(SqlInsertStatement)
+        teamDetails['id'] = team['id'] 
+        teamDetails['season'] = team['season']
+        teamDetails['name'] = team['name']
+        teamDetails['teamName'] = team['teamName']
+        teamDetails['locationName'] = team.get('locationName', None)
+        teamDetails['firstYearOfPlay'] = team['firstYearOfPlay']
+        teamDetails['link'] = team['link']
+        teamDetails['teamCode'] = team['teamCode']
+        teamDetails['fileCode'] = team['fileCode']
+        teamDetails['abbreviation'] = team['abbreviation']
+        teamDetails['allStarStatus'] = team['allStarStatus']
+        teamDetails['shortName'] = team['shortName']
+        teamDetails['franchiseName'] = team['franchiseName']
+        teamDetails['clubName'] = team['clubName']
+        teamDetails['active'] = team['active']
 
-            # #without this it doesnt commit - giving you a chance to check the execution and confirm it worked,. Your can query before commit
-            conn.commit()
+        # Optional or potentially missing fields
+        teamDetails['springLeague'] = None
+        if team.get('springLeague'):
+            teamDetails['springLeague'] = team['springLeague'].get('name', None)        
 
-        except KeyError:
-            #if there is a key error - if the key isn't present, dont push to db
-            print('Error', sys.exc_info()[0])
+        # Some expansions teams don't have a venue defined
+        teamDetails['venueID'] = None
+        teamDetails['venueName'] = None
+        if team.get('venue'):
+            teamDetails['venueID'] = team['venue'].get('id', None)
+            teamDetails['venueName'] = team['venue'].get('name', None)
+        
+        # Some teams (such as the Rays in 1997) don't have a league defined
+        teamDetails['leagueName'] = None
+        if team.get('league'):
+            teamDetails['leagueName'] = team['league'].get('name', None)
 
+        # Some teams (such as the Rays in 1997) don't have a division defined
+        teamDetails['divisionName'] = None
+        if team.get('division'):
+            teamDetails['divisionName'] = team['division'].get('name', None)
+
+        teamsList.append(teamDetails)
+
+    # Create the raw table
+    # db.create_table('raw.Team', teamsList, True)
+
+    # Load the raw table
+    db.insert_rows('raw.Team', teamsList)
+
+
+if __name__ == "__main__":
+    season = 2025
+    while True:
+        try:
+            getTeams(season)
+            season -= 1
+        except Exception as e:
+            print(f"An error occurred while processing season {season}: {e}")
+            break
+    
