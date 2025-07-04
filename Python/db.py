@@ -1,8 +1,6 @@
 import pyodbc
 import os
 
- 
-
 
 # Get connection to the database
 def connect_to_db():
@@ -100,3 +98,12 @@ def create_table(table_name, rows, drop_if_exists):
     
     finally:
         conn.close()        
+
+
+def execute_non_query(sql):
+    conn = connect_to_db()
+
+    cursor = conn.cursor()
+    cursor.execute(sql)
+    conn.commit()
+    
